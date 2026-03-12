@@ -235,4 +235,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_IDEA_LAST_USED, 0); // 0 = jamais utilisé
         db.insert(TABLE_IDEAS, null, values);
     }
+
+    // Ajouter une nouvelle image à la base de données
+    public void addImageToGallery(String title, String imagePath) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_GALLERY_TITLE, title);
+        values.put(COLUMN_GALLERY_IMAGE_PATH, imagePath);
+
+        db.insert(TABLE_GALLERY, null, values);
+    }
+
+    // Récupérer toutes les images pour les afficher dans la grille
+    public java.util.List<GalleryItem> getAllGalleryItems() {
+        java.util.List<GalleryItem> list = new java.util.ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // On récupère tout, trié par ID décroissant (les plus récents en premier)
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GALLERY + " ORDER BY " + COLUMN_GALLERY_ID + " DESC", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int idIndex = cursor.getColumnIndex(COLUMN_GALLERY_ID);
+                int titleIndex = cursor.getColumnIndex(COLUMN_GALLERY_TITLE);
+                int pathIndex = cursor.getColumnIndex(COLUMN_GALLERY_IMAGE_PATH);
+
+                int id = cursor.getInt(idIndex);
+                String title = cursor.getString(titleIndex);
+                String imagePath = cursor.getString(pathIndex);
+
+                list.add(new GalleryItem(id, title, imagePath));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
 }
