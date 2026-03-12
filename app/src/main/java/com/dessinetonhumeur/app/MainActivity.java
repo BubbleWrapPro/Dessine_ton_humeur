@@ -1,6 +1,6 @@
 package com.dessinetonhumeur.app;
 
-// Basic imports
+// Default imports
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
