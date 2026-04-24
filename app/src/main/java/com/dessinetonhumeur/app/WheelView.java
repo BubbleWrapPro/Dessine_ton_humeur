@@ -17,9 +17,16 @@ public class WheelView extends View {
 
     // Liste de nos humeurs
     private final String[] moods = {
-            "Inspiré par la Nature", "Joyeux", "Nostalgique", "Triste",
+            "Onirique", "Joyeux", "Nostalgique", "Triste",
             "Énergique", "Mystérieux", "Futuriste", "Calme",
             "Colère", "Romantique", "Créatif"
+    };
+
+    // Tableau utilisé UNIQUEMENT pour dessiner le texte sur la roue
+    private final String[] moodsDisplay = {
+            "🌳 Onirique", "😊 Joyeux", "🎵 Nostalgique", "😢 Triste",
+            "⚡ Énergique", "🌌 Mystérieux", "🚀 Futuriste", "🛏️ Calme",
+            "😡 Colère", "💘 Romantique", "🎨 Créatif"
     };
 
     // Objets Paint utilisés pour définir comment dessiner (couleur, taille, style)
@@ -91,7 +98,7 @@ public class WheelView extends View {
 
             // Calcule l'angle au centre exact de ce segment pour y placer le texte
             float textAngle = angle + (i * segmentAngle) + (segmentAngle / 2f);
-            drawText(canvas, moods[i], centerX, centerY, radius, textAngle);
+            drawText(canvas, moodsDisplay[i], centerX, centerY, radius, textAngle);
         }
 
         // Dessin du contour noir autour de la roue pour la finition
@@ -111,7 +118,7 @@ public class WheelView extends View {
         float y = (float) (centerY + (radius * 0.65) * Math.sin(radians));
 
         // Tourner le canvas autour du point (x,y) pour que le texte pointe vers l'extérieur
-        canvas.rotate(textAngle + 90, x, y);
+        canvas.rotate(textAngle, x, y);
         canvas.drawText(text, x, y, textPaint);
 
         canvas.restore(); // Restaure le canvas à son état droit
@@ -121,7 +128,7 @@ public class WheelView extends View {
     private int getColorForMood(int index) {
         // Ces couleurs correspondent une à une au tableau 'moods'
         String[] hexColors = {
-                "#4CAF50", // Inspiré par la Nature (Vert)
+                "#4CAF50", // Onirique (Vert)
                 "#FFEB3B", // Joyeux (Jaune)
                 "#9E9E9E", // Nostalgique (Gris)
                 "#2196F3", // Triste (Bleu)

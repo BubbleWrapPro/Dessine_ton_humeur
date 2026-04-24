@@ -5,4 +5,6 @@
     <string name="titre_du_dessin">Drawing\'s title</string>
     <string name="emplacement_d_une_image">Box for custom picture</string>
     <string name="supprime_photo">Delete picture</string>
+    <string name="generer">Generate</string>
+    <string name="partager">"Share "</string>
 </resources>

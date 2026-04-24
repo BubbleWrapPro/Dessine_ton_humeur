@@ -4,4 +4,6 @@
     <string name="titre_du_dessin">Titre du dessin</string>
     <string name="emplacement_d_une_image">Emplacement d\'une image</string>
     <string name="supprime_photo">Supprimer une photo</string>
+    <string name="generer">Générer</string>
+    <string name="partager">Partager</string>
 </resources>

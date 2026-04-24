@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 // Import for database and time limitation
 import android.content.SharedPreferences;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,12 +43,37 @@ public class MainActivity extends AppCompatActivity {
 
         Button galleryButton = findViewById(R.id.gallery_button);
 
+        Button shareButton = findViewById(R.id.share_button);
+
 
         generateButton.setOnClickListener(v -> handleGenerateClick());
 
         galleryButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
             startActivity(intent);
+        });
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentIdea = ideaText.getText().toString();
+
+                // On vérifie que l'utilisateur a bien généré une idée avant de partager
+                if (!currentIdea.equals("Tournez la roue et appuyez sur générer !") && !currentIdea.isEmpty()) {
+
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain"); // On précise qu'on envoie du texte simple
+
+                    // Le texte qui sera envoyé
+                    String messageToShare = "Aujourd'hui, mon humeur m'inspire cette idée de dessin : " + currentIdea + " 🎨✨ (Généré via DrawYourMood)";
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, messageToShare);
+
+                    // Ouvre le menu de choix d'application
+                    startActivity(Intent.createChooser(shareIntent, "Partager mon idée avec..."));
+                } else {
+                    Toast.makeText(MainActivity.this, "Générez d'abord une idée pour la partager !", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 
