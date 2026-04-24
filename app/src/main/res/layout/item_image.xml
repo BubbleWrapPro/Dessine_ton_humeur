@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/surfaceColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +21,7 @@
             android:layout_height="150dp"
             android:contentDescription="@string/emplacement_d_une_image"
             android:scaleType="centerCrop"
-            android:background="@color/full_white" />
+            android:background="#E0E0E0" />
 
         <TextView
             android:id="@+id/item_text_title"
@@ -24,6 +29,7 @@
             android:layout_height="wrap_content"
             android:text="@string/titre_du_dessin"
             android:textAlignment="center"
+            android:textColor="@color/textColorPrimary"
             android:textStyle="bold"
             android:layout_marginTop="4dp"
             android:maxLines="2"
@@ -40,4 +46,4 @@
         android:focusable="false"
         android:clickable="false" />
 
-</FrameLayout>
+</com.google.android.material.card.MaterialCardView>

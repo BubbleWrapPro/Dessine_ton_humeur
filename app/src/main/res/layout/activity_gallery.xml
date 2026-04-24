@@ -1,40 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="16dp"
+    android:background="@color/backgroundColor">
 
-    <Button
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/retour"
-        android:layout_marginBottom="8dp"
-        style="?android:attr/borderlessButtonStyle"/>
+        android:layout_marginBottom="24dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_back"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="@string/retour"
+            android:textColor="@color/secondaryColor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Ma Galerie"
+            android:textColor="@color/primaryColor"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="24dp">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_choose_photo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:text="@string/depuis_le_telephone"
-            android:layout_marginEnd="8dp"
+            app:cornerRadius="28dp"
+            android:backgroundTint="@color/primaryColor"
+            android:layout_marginEnd="12dp"
             tools:ignore="ButtonStyle" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_delete_photo"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:text="@string/supprime_photo"
-            android:layout_marginEnd="8dp"
+            app:cornerRadius="28dp"
+            app:strokeColor="@color/dangerColor"
+            android:textColor="@color/dangerColor"
             tools:ignore="ButtonStyle" />
 
     </LinearLayout>
@@ -44,8 +69,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="2"
-        android:verticalSpacing="8dp"
-        android:horizontalSpacing="8dp"
-        android:stretchMode="columnWidth" />
+        android:verticalSpacing="12dp"
+        android:horizontalSpacing="12dp"
+        android:stretchMode="columnWidth"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp" />
 
 </LinearLayout>

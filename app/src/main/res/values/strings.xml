@@ -10,4 +10,7 @@
     <string name="partager_ce_dessin">Partager ce dessin</string>
     <string name="agrandissement_de_l_image">Agrandissement de l\'image</string>
     <string name="confirmer_la_suppression">Confirmer la suppression</string>
+    <string name="titre">Dessine ton humeur</string>
+    <string name="tourner_la_roue">Tournez la roue et appuyez sur générer !</string>
+    <string name="voir_ma_galerie">Voir ma Galerie</string>
 </resources>
