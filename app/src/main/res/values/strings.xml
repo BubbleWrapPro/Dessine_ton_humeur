@@ -13,4 +13,5 @@
     <string name="titre">Dessine ton humeur</string>
     <string name="tourner_la_roue">Tournez la roue et appuyez sur générer !</string>
     <string name="voir_ma_galerie">Voir ma Galerie</string>
+    <string name="ma_galerie">Ma Galerie</string>
 </resources>

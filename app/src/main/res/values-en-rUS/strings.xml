@@ -14,4 +14,5 @@
     <string name="titre">Draw your mood</string>
     <string name="tourner_la_roue">Spin the wheel to generate an idea</string>
     <string name="voir_ma_galerie">Access the gallery</string>
+    <string name="ma_galerie">My Gallery</string>
 </resources>
