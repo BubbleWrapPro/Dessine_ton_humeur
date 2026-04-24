@@ -251,7 +251,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         java.util.List<GalleryItem> list = new java.util.ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // On récupère tout, trié par ID décroissant (les plus récents en premier)
+        // On récupère tout, trié par ID décroissant (les plus récents en premier).
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GALLERY + " ORDER BY " + COLUMN_GALLERY_ID + " DESC", null);
 
         if (cursor.moveToFirst()) {

@@ -1,16 +1,13 @@
 package com.dessinetonhumeur.app;
 
 // Default imports
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.activity.EdgeToEdge;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 // Import for database and time limitation
 import android.content.SharedPreferences;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +16,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private WheelView wheel;
-    private Button generateButton;
     private TextView ideaText;
     private DatabaseHelper dbHelper;
 
@@ -41,16 +37,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Liaison avec les éléments de l'interface XML
         wheel = findViewById(R.id.wheel);
-        generateButton = findViewById(R.id.generate_button);
+        Button generateButton = findViewById(R.id.generate_button);
         ideaText = findViewById(R.id.idea_text);
 
-        // (Tu devras aussi lier ton bouton galerie plus tard quand on fera l'Action 4)
+        Button galleryButton = findViewById(R.id.gallery_button);
 
-        generateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleGenerateClick();
-            }
+
+        generateButton.setOnClickListener(v -> handleGenerateClick());
+
+        galleryButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -61,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 1. VÉRIFICATION DU TEMPS (1 heure)
         if (currentTime - lastSpinTime < ONE_HOUR_MILLIS) {
-            // Le temps n'est pas écoulé. On calcule combien de minutes il reste.
+            // Le temps n'est pas écoulé. On calcule combien de minutes, il reste.
             long timeLeftMillis = ONE_HOUR_MILLIS - (currentTime - lastSpinTime);
             int minutesLeft = (int) (timeLeftMillis / (1000 * 60));
 
@@ -82,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             // On affiche le texte à l'écran
             ideaText.setText(randomIdea.text);
 
-            // On met à jour la base de données pour dire que cette idée vient d'être utilisée (bloquée 1 mois)
+            // On met à jour la base de données pour dire que cette idée vient d'être utilisée (bloquée UN mois).
             dbHelper.markIdeaAsUsed(randomIdea.id);
 
             // On sauvegarde l'heure actuelle pour bloquer le bouton pendant 1 heure

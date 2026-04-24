@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Draw your mood</string>
+    <string name="depuis_le_telephone">From your phone</string>
+    <string name="titre_du_dessin">Drawing\'s title</string>
+    <string name="emplacement_d_une_image">Box for custom picture</string>
+</resources>
