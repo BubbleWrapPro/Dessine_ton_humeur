@@ -94,9 +94,18 @@ public class GalleryAdapter extends BaseAdapter {
         // Afficher/Cacher la CheckBox selon le mode
         if (selectionMode) {
             checkBox.setVisibility(View.VISIBLE);
-            checkBox.setChecked(selectedPositions.contains(position));
+            boolean isSelected = selectedPositions.contains(position);
+            checkBox.setChecked(isSelected);
+            
+            // Petit retour visuel : on assombrit un peu si sélectionné
+            if (isSelected) {
+                convertView.setAlpha(0.5f);
+            } else {
+                convertView.setAlpha(1.0f);
+            }
         } else {
             checkBox.setVisibility(View.GONE);
+            convertView.setAlpha(1.0f);
         }
 
         return convertView;

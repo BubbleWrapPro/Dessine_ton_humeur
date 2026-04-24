@@ -6,4 +6,8 @@
     <string name="supprime_photo">Supprimer une photo</string>
     <string name="generer">Générer</string>
     <string name="partager">Partager</string>
+    <string name="retour">← Retour</string>
+    <string name="partager_ce_dessin">Partager ce dessin</string>
+    <string name="agrandissement_de_l_image">Agrandissement de l\'image</string>
+    <string name="confirmer_la_suppression">Confirmer la suppression</string>
 </resources>

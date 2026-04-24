@@ -47,4 +47,14 @@ public class FileManager {
             return null; // En cas d'erreur
         }
     }
+
+    public static boolean deleteImageFile(String path) {
+        try {
+            File file = new File(path);
+            return file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
