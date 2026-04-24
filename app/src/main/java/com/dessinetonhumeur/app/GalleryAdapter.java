@@ -6,20 +6,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GalleryAdapter extends BaseAdapter {
 
     private Context context;
     private List<GalleryItem> items;
+    private boolean selectionMode = false;
+    private Set<Integer> selectedPositions = new HashSet<>();
 
     public GalleryAdapter(Context context, List<GalleryItem> items) {
         this.context = context;
         this.items = items;
+    }
+
+    public void setSelectionMode(boolean selectionMode) {
+        this.selectionMode = selectionMode;
+        if (!selectionMode) {
+            selectedPositions.clear();
+        }
+        notifyDataSetChanged();
+    }
+
+    public boolean isSelectionMode() {
+        return selectionMode;
+    }
+
+    public void toggleSelection(int position) {
+        if (selectedPositions.contains(position)) {
+            selectedPositions.remove(position);
+        } else {
+            selectedPositions.add(position);
+        }
+        notifyDataSetChanged();
+    }
+
+    public Set<Integer> getSelectedPositions() {
+        return selectedPositions;
     }
 
     @Override
@@ -48,6 +78,7 @@ public class GalleryAdapter extends BaseAdapter {
         // On récupère les éléments de l'interface
         ImageView imageView = convertView.findViewById(R.id.item_image_view);
         TextView titleText = convertView.findViewById(R.id.item_text_title);
+        CheckBox checkBox = convertView.findViewById(R.id.item_checkbox);
 
         // On récupère l'objet correspondant à cette case
         GalleryItem currentItem = items.get(position);
@@ -58,6 +89,14 @@ public class GalleryAdapter extends BaseAdapter {
         File imgFile = new File(currentItem.imagePath);
         if (imgFile.exists()) {
             imageView.setImageURI(Uri.fromFile(imgFile));
+        }
+
+        // Afficher/Cacher la CheckBox selon le mode
+        if (selectionMode) {
+            checkBox.setVisibility(View.VISIBLE);
+            checkBox.setChecked(selectedPositions.contains(position));
+        } else {
+            checkBox.setVisibility(View.GONE);
         }
 
         return convertView;

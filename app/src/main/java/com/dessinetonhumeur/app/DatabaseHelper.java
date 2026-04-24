@@ -271,4 +271,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    // Supprimer un élément de la galerie
+    public boolean deleteGalleryItem(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        
+        // 1. On récupère le chemin du fichier pour le supprimer physiquement
+        String path = null;
+        Cursor cursor = db.query(TABLE_GALLERY, new String[]{COLUMN_GALLERY_IMAGE_PATH}, COLUMN_GALLERY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor.moveToFirst()) {
+            path = cursor.getString(0);
+        }
+        cursor.close();
+
+        if (path != null) {
+            java.io.File file = new java.io.File(path);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+
+        // 2. Supprimer de la base de données
+        int result = db.delete(TABLE_GALLERY, COLUMN_GALLERY_ID + "=?", new String[]{String.valueOf(id)});
+        return result > 0;
+    }
+
 }

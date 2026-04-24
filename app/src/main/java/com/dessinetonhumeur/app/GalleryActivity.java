@@ -16,13 +16,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
+import java.util.Set;
 
 public class GalleryActivity extends AppCompatActivity {
 
     private GridView gridView;
-    private GalleryAdapter adapter;
     private DatabaseHelper dbHelper;
-    private List<GalleryItem> galleryItems;
+    private GalleryAdapter adapter;
 
     // Cet outil moderne d'Android remplace l'ancien "onActivityResult".
     // Il gère l'action "aller chercher un document" et nous renvoie un Uri quand l'utilisateur a choisi une image.
@@ -47,6 +47,7 @@ public class GalleryActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         gridView = findViewById(R.id.grid_view);
         Button btnChoosePhoto = findViewById(R.id.btn_choose_photo);
+        Button btnDeletePhoto = findViewById(R.id.btn_delete_photo);
 
         // On charge la galerie une première fois
         loadGallery();
@@ -61,6 +62,57 @@ public class GalleryActivity extends AppCompatActivity {
                 photoPickerLauncher.launch(Intent.createChooser(intent, "Sélectionnez une image"));
             }
         });
+
+        // Bouton Supprimer
+        btnDeletePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (adapter == null || adapter.getCount() == 0) {
+                    Toast.makeText(GalleryActivity.this, "Galerie vide", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!adapter.isSelectionMode()) {
+                    // On entre en mode sélection
+                    adapter.setSelectionMode(true);
+                    btnDeletePhoto.setText("Confirmer la suppression");
+                    Toast.makeText(GalleryActivity.this, "Sélectionnez les images à supprimer", Toast.LENGTH_SHORT).show();
+                } else {
+                    // On supprime les éléments sélectionnés
+                    Set<Integer> selectedPositions = adapter.getSelectedPositions();
+                    if (selectedPositions.isEmpty()) {
+                        // Si rien n'est sélectionné, on quitte juste le mode
+                        adapter.setSelectionMode(false);
+                        btnDeletePhoto.setText(R.string.supprime_photo);
+                    } else {
+                        // Demander confirmation avant de supprimer plusieurs
+                        new AlertDialog.Builder(GalleryActivity.this)
+                                .setTitle("Suppression")
+                                .setMessage("Voulez-vous supprimer les images sélectionnées ?")
+                                .setPositiveButton("Oui", (dialog, which) -> {
+                                    List<GalleryItem> items = dbHelper.getAllGalleryItems();
+                                    for (int pos : selectedPositions) {
+                                        dbHelper.deleteGalleryItem(items.get(pos).id);
+                                    }
+                                    adapter.setSelectionMode(false);
+                                    btnDeletePhoto.setText(R.string.supprime_photo);
+                                    loadGallery();
+                                    Toast.makeText(GalleryActivity.this, "Images supprimées", Toast.LENGTH_SHORT).show();
+                                })
+                                .setNegativeButton("Non", null)
+                                .show();
+                    }
+                }
+            }
+        });
+
+        // Clic sur un item de la grille
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            if (adapter != null && adapter.isSelectionMode()) {
+                adapter.toggleSelection(position);
+            }
+        });
+
     }
 
     // Méthode pour afficher un Popup demandant le titre du dessin
@@ -109,7 +161,7 @@ public class GalleryActivity extends AppCompatActivity {
 
     // Charge (ou recharge) les images depuis la BDD vers l'écran
     private void loadGallery() {
-        galleryItems = dbHelper.getAllGalleryItems();
+        List<GalleryItem> galleryItems = dbHelper.getAllGalleryItems();
         adapter = new GalleryAdapter(this, galleryItems);
         gridView.setAdapter(adapter);
     }
