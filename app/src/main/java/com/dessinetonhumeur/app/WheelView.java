@@ -36,6 +36,8 @@ public class WheelView extends View {
     private Paint trianglePaint;
 
     private float angle = 0f; // L'angle actuel de rotation de la roue
+    private float startTouchAngle = 0f; // L'angle du doigt au début du toucher
+    private float startWheelAngle = 0f; // L'angle de la roue au début du toucher
     private RectF rectF; // La zone rectangulaire dans laquelle la roue sera dessinée
 
     // Constructeur appelé quand la vue est créée depuis un fichier XML
@@ -164,13 +166,26 @@ public class WheelView extends View {
         float x = event.getX() - getWidth() / 2f;
         float y = event.getY() - getHeight() / 2f;
 
+        double degrees = Math.toDegrees(Math.atan2(y, x));
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                // 1. On mémorise l'angle de la roue au moment du contact
+                startWheelAngle = angle;
+                // 2. On calcule l'angle absolu du doigt au moment du contact
+                startTouchAngle = (float) degrees;
+                return true;
+
             case MotionEvent.ACTION_MOVE:
-                // Math.atan2 calcule l'angle entre le centre (0,0) et le doigt (x, y)
-                // On le convertit en degrés. La roue suivra donc le doigt de l'utilisateur.
-                angle = (float) Math.toDegrees(Math.atan2(y, x));
-                invalidate(); // Dit à Android de rappeler la méthode onDraw() pour redessiner la vue avec le nouvel angle
+                // 3. On calcule l'angle actuel du doigt
+                float currentTouchAngle = (float) degrees;
+
+                // 4. On calcule la différence (le delta) entre le début et maintenant
+                float angleDelta = currentTouchAngle - startTouchAngle;
+
+                // 5. On applique ce delta à l'angle initial de la roue
+                angle = startWheelAngle + angleDelta;
+
+                invalidate(); // Redessine la roue
                 return true;
         }
         return super.onTouchEvent(event);
