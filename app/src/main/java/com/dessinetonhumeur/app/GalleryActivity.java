@@ -46,6 +46,22 @@ public class GalleryActivity extends AppCompatActivity {
             }
     );
 
+    private String currentPhotoPath;
+
+    // Le lanceur spécifique pour l'appareil photo
+    private final ActivityResultLauncher<Uri> takePictureLauncher = registerForActivityResult(
+            new ActivityResultContracts.TakePicture(),
+            result -> {
+                if (result) {
+                    // La photo a été prise et sauvegardée avec succès dans notre fichier !
+                    askForTitleForCameraPhoto(currentPhotoPath);
+                } else {
+                    // L'utilisateur a annulé ou l'appareil photo a planté : on nettoie le fichier vide
+                    FileManager.deleteImageFile(currentPhotoPath);
+                }
+            }
+    );
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +84,26 @@ public class GalleryActivity extends AppCompatActivity {
                 // Création d'une "Intention" pour ouvrir le sélecteur d'images d'Android
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
-                photoPickerLauncher.launch(Intent.createChooser(intent, "Sélectionnez une image"));
+                photoPickerLauncher.launch(Intent.createChooser(intent, getString(R.string.s_lectionnez_une_image)));
             }
+        });
+
+        Button btnTakePhoto = findViewById(R.id.btn_take_photo);
+
+        btnTakePhoto.setOnClickListener(v -> {
+            // 1. On crée le fichier vide
+            File photoFile = FileManager.createImageFile(this);
+
+            // 2. On mémorise son chemin pour plus tard
+            currentPhotoPath = photoFile.getAbsolutePath();
+
+            // 3. On génère un URI sécurisé avec le FileProvider
+            Uri photoURI = FileProvider.getUriForFile(this,
+                    getPackageName() + ".fileprovider",
+                    photoFile);
+
+            // 4. On lance l'appareil photo en lui donnant l'URI cible
+            takePictureLauncher.launch(photoURI);
         });
 
         // Bouton Supprimer
@@ -77,7 +111,7 @@ public class GalleryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (adapter == null || adapter.getCount() == 0) {
-                    Toast.makeText(GalleryActivity.this, "Galerie vide", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GalleryActivity.this, R.string.galerie_vide, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -85,7 +119,7 @@ public class GalleryActivity extends AppCompatActivity {
                     // On entre en mode sélection
                     adapter.setSelectionMode(true);
                     btnDeletePhoto.setText(R.string.confirmer_la_suppression);
-                    Toast.makeText(GalleryActivity.this, "Sélectionnez les images à supprimer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GalleryActivity.this, R.string.s_lectionnez_les_images_supprimer, Toast.LENGTH_SHORT).show();
                 } else {
                     // On supprime les éléments sélectionnés
                     Set<Integer> selectedPositions = adapter.getSelectedPositions();
@@ -96,9 +130,9 @@ public class GalleryActivity extends AppCompatActivity {
                     } else {
                         // Demander confirmation avant de supprimer plusieurs
                         new AlertDialog.Builder(GalleryActivity.this)
-                                .setTitle("Suppression")
+                                .setTitle(R.string.suppression)
                                 .setMessage("Voulez-vous supprimer les " + selectedPositions.size() + " image(s) sélectionnée(s) ?")
-                                .setPositiveButton("Oui", (dialog, which) -> {
+                                .setPositiveButton(R.string.oui, (dialog, which) -> {
                                     for (int pos : selectedPositions) {
                                         GalleryItem item = (GalleryItem) adapter.getItem(pos);
                                         // 1. Suppression physique du fichier
@@ -109,9 +143,9 @@ public class GalleryActivity extends AppCompatActivity {
                                     adapter.setSelectionMode(false);
                                     btnDeletePhoto.setText(R.string.supprime_photo);
                                     loadGallery();
-                                    Toast.makeText(GalleryActivity.this, "Images supprimées", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(GalleryActivity.this, R.string.images_supprim_es, Toast.LENGTH_SHORT).show();
                                 })
-                                .setNegativeButton("Non", null)
+                                .setNegativeButton(R.string.non, null)
                                 .show();
                     }
                 }
@@ -251,5 +285,32 @@ public class GalleryActivity extends AppCompatActivity {
         if (btnDeletePhoto != null) {
             btnDeletePhoto.setText(R.string.supprime_photo);
         }
+    }
+
+    // Demande le titre spécifiquement pour une image prise avec l'appareil photo
+    private void askForTitleForCameraPhoto(String imagePath) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Titre de votre œuvre");
+
+        final EditText input = new EditText(this);
+        builder.setView(input);
+
+        builder.setPositiveButton("Enregistrer", (dialog, which) -> {
+            String title = input.getText().toString().trim();
+            if (title.isEmpty()) title = "Sans titre";
+
+            // L'image est DÉJÀ copiée, on l'insère directement dans la base de données !
+            dbHelper.addImageToGallery(title, imagePath);
+            Toast.makeText(this, "Dessin sauvegardé !", Toast.LENGTH_SHORT).show();
+            loadGallery();
+        });
+
+        builder.setNegativeButton("Annuler", (dialog, which) -> {
+            // Si on annule, on supprime la photo du téléphone pour ne pas gâcher d'espace
+            FileManager.deleteImageFile(imagePath);
+            dialog.cancel();
+        });
+
+        builder.show();
     }
 }

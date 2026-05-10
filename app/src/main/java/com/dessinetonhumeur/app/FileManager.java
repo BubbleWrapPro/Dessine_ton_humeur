@@ -57,4 +57,12 @@ public class FileManager {
             return false;
         }
     }
+
+    public static File createImageFile(Context context) {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String fileName = "MOOD_DRAWING_" + timeStamp + ".jpg";
+
+        // On crée le fichier directement dans getFilesDir() (le stockage privé)
+        return new File(context.getFilesDir(), fileName);
+    }
 }

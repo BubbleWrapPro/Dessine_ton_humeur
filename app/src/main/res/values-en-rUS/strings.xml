@@ -4,7 +4,7 @@
     <string name="depuis_le_telephone">From your phone</string>
     <string name="titre_du_dessin">Drawing\'s title</string>
     <string name="emplacement_d_une_image">Box for custom picture</string>
-    <string name="supprime_photo">Delete picture</string>
+    <string name="supprime_photo">Delete</string>
     <string name="generer">Generate</string>
     <string name="partager">"Share "</string>
     <string name="retour">← Home</string>
@@ -15,4 +15,12 @@
     <string name="tourner_la_roue">Spin the wheel to generate an idea</string>
     <string name="voir_ma_galerie">Access the gallery</string>
     <string name="ma_galerie">My Gallery</string>
+    <string name="photo">Picture</string>
+    <string name="s_lectionnez_une_image">Choose a picture</string>
+    <string name="galerie_vide">Empty gallery</string>
+    <string name="s_lectionnez_les_images_supprimer">Select what you want to delete</string>
+    <string name="oui">Yes</string>
+    <string name="suppression">Deleting</string>
+    <string name="images_supprim_es">Picture(s) deleted</string>
+    <string name="non">No</string>
 </resources>

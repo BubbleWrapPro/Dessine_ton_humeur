@@ -3,7 +3,7 @@
     <string name="depuis_le_telephone">Depuis le téléphone</string>
     <string name="titre_du_dessin">Titre du dessin</string>
     <string name="emplacement_d_une_image">Emplacement d\'une image</string>
-    <string name="supprime_photo">Supprimer une photo</string>
+    <string name="supprime_photo">Supprimer</string>
     <string name="generer">Générer</string>
     <string name="partager">Partager</string>
     <string name="retour">← Retour</string>
@@ -14,4 +14,12 @@
     <string name="tourner_la_roue">Tournez la roue et appuyez sur générer !</string>
     <string name="voir_ma_galerie">Voir ma Galerie</string>
     <string name="ma_galerie">Ma Galerie</string>
+    <string name="photo">Photo</string>
+    <string name="s_lectionnez_une_image">Sélectionnez une image</string>
+    <string name="galerie_vide">Galerie vide</string>
+    <string name="s_lectionnez_les_images_supprimer">Sélectionnez les images à supprimer</string>
+    <string name="oui">Oui</string>
+    <string name="suppression">Suppression</string>
+    <string name="images_supprim_es">Images supprimées</string>
+    <string name="non">Non</string>
 </resources>
