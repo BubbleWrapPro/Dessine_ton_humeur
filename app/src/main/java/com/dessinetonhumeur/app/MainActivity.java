@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_LAST_SPIN_TIME = "last_spin_time";
 
     // 1 heure en millisecondes : 60 minutes * 60 secondes * 1000
-    private static final long ONE_HOUR_MILLIS = 3600000;
+    private static final long ONE_HOUR_MILLIS = 300_000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

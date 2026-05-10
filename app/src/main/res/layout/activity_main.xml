@@ -17,6 +17,7 @@
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/primaryColor"
+        android:fontFamily="@font/cabin_sketch"
         android:layout_marginBottom="32dp" />
 
     <com.dessinetonhumeur.app.WheelView
@@ -37,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:text="@string/generer"
+            android:fontFamily="@font/cabin_sketch"
             android:textSize="16sp"
             app:cornerRadius="28dp"
             android:backgroundTint="@color/primaryColor"
@@ -48,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:text="@string/partager"
+            android:fontFamily="@font/cabin_sketch"
             android:textSize="16sp"
             app:cornerRadius="28dp"
             app:strokeColor="@color/primaryColor"
@@ -60,6 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/tourner_la_roue"
+        android:fontFamily="@font/cabin_sketch"
         android:textSize="18sp"
         android:textAlignment="center"
         android:textStyle="italic"
@@ -74,6 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/voir_ma_galerie"
+        android:fontFamily="@font/cabin_sketch"
         android:textColor="@color/secondaryColor"
         android:textSize="16sp"
         android:layout_gravity="center_horizontal" />

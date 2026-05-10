@@ -41,11 +41,11 @@ public class WheelView extends View {
     // Constructeur appelé quand la vue est créée depuis un fichier XML
     public WheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     // Initialisation des outils de dessin (il ne faut jamais instancier des objets dans onDraw pour des raisons de performances)
-    private void init() {
+    private void init(@org.jspecify.annotations.NonNull Context context) {
         // ANTI_ALIAS_FLAG permet d'avoir des bords lisses (non pixelisés)
         segmentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         segmentPaint.setStyle(Paint.Style.FILL);
