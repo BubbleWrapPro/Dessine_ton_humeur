@@ -40,6 +40,9 @@ public class GalleryAdapter extends BaseAdapter {
     }
 
     public void toggleSelection(int position) {
+        if (position >= items.size()) {
+            return;
+        }
         if (selectedPositions.contains(position)) {
             selectedPositions.remove(position);
         } else {
@@ -54,17 +57,23 @@ public class GalleryAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return items.size(); // Le nombre d'images à afficher
+        return Math.max(items.size(), 6); // Le nombre d'images à afficher (6 minimum)
     }
 
     @Override
     public Object getItem(int position) {
-        return items.get(position); // Récupère l'élément à une position précise
+        if (position < items.size()) {
+            return items.get(position);
+        }
+        return null;
     }
 
     @Override
     public long getItemId(int position) {
-        return items.get(position).id;
+        if (position < items.size()) {
+            return items.get(position).id;
+        }
+        return position;
     }
 
     // C'est ICI que la magie opère : on crée la vue pour CHAQUE case de la grille
@@ -75,39 +84,62 @@ public class GalleryAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_image, parent, false);
         }
 
-        // On récupère les éléments de l'interface
-        ImageView imageView = convertView.findViewById(R.id.item_image_view);
-        TextView titleText = convertView.findViewById(R.id.item_text_title);
-        CheckBox checkBox = convertView.findViewById(R.id.item_checkbox);
+        if (position < items.size()) {
 
-        // On récupère l'objet correspondant à cette case
-        GalleryItem currentItem = items.get(position);
+            // On récupère les éléments de l'interface
+            ImageView imageView = convertView.findViewById(R.id.item_image_view);
+            TextView titleText = convertView.findViewById(R.id.item_text_title);
+            CheckBox checkBox = convertView.findViewById(R.id.item_checkbox);
 
-        titleText.setText(currentItem.title);
+            // On récupère l'objet correspondant à cette case
+            GalleryItem currentItem = items.get(position);
 
-        // On affiche l'image depuis notre stockage interne
-        File imgFile = new File(currentItem.imagePath);
-        if (imgFile.exists()) {
-            imageView.setImageURI(Uri.fromFile(imgFile));
-        }
+            titleText.setText(currentItem.title);
 
-        // Afficher/Cacher la CheckBox selon le mode
-        if (selectionMode) {
-            checkBox.setVisibility(View.VISIBLE);
-            boolean isSelected = selectedPositions.contains(position);
-            checkBox.setChecked(isSelected);
-            
-            // Petit retour visuel : on assombrit un peu si sélectionné
-            if (isSelected) {
-                convertView.setAlpha(0.5f);
+            // On affiche l'image depuis notre stockage interne
+            File imgFile = new File(currentItem.imagePath);
+            if (imgFile.exists()) {
+                imageView.setImageURI(Uri.fromFile(imgFile));
             } else {
+                // Si le fichier image est introuvable, on réinitialise l'ImageView
+                // pour afficher le fond gris de substitution (placeholder) défini en XML.
+                imageView.setImageURI(null);
+            }
+
+            // Afficher/Cacher la CheckBox selon le mode
+            if (selectionMode) {
+                checkBox.setVisibility(View.VISIBLE);
+                boolean isSelected = selectedPositions.contains(position);
+                checkBox.setChecked(isSelected);
+
+                // Petit retour visuel : on assombrit un peu si sélectionné
+                if (isSelected) {
+                    convertView.setAlpha(0.5f);
+                } else {
+                    convertView.setAlpha(1.0f);
+                }
+            } else {
+                checkBox.setVisibility(View.GONE);
                 convertView.setAlpha(1.0f);
             }
-        } else {
+
+            return convertView;
+        }
+        else{
+            // On récupère les éléments de l'interface et on met des valeurs de substitution
+            ImageView imageView = convertView.findViewById(R.id.item_image_view);
+            imageView.setImageURI(null);
+
+            TextView titleText = convertView.findViewById(R.id.item_text_title);
+            String emptyTitle = "Dessin n°" + (position + 1);
+            titleText.setText(emptyTitle);
+
+            CheckBox checkBox = convertView.findViewById(R.id.item_checkbox);
+            // On disable la checkbox car elle n'est pas utilisée dans ce contexte
             checkBox.setVisibility(View.GONE);
             convertView.setAlpha(1.0f);
-        }
 
-        return convertView;
+            return convertView;
+        }
     }
 }

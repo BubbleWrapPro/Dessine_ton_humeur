@@ -10,7 +10,7 @@
     <string name="retour">← Home</string>
     <string name="partager_ce_dessin">Share this drawing</string>
     <string name="agrandissement_de_l_image">Bigger picture</string>
-    <string name="confirmer_la_suppression">Confirm you want to delete</string>
+    <string name="confirmer_la_suppression">Confirm / Cancel</string>
     <string name="titre">Draw your mood</string>
     <string name="tourner_la_roue">Spin the wheel to generate an idea</string>
     <string name="voir_ma_galerie">Access the gallery</string>
@@ -23,4 +23,5 @@
     <string name="suppression">Deleting</string>
     <string name="images_supprim_es">Picture(s) deleted</string>
     <string name="non">No</string>
+    <string name="ajouter_image_emplacement">Add an image to fill this slot!</string>
 </resources>

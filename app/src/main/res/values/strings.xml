@@ -9,7 +9,7 @@
     <string name="retour">← Retour</string>
     <string name="partager_ce_dessin">Partager ce dessin</string>
     <string name="agrandissement_de_l_image">Agrandissement de l\'image</string>
-    <string name="confirmer_la_suppression">Confirmer la suppression</string>
+    <string name="confirmer_la_suppression">Confirmer / Annuler</string>
     <string name="titre">Dessine ton humeur</string>
     <string name="tourner_la_roue">Tournez la roue et appuyez sur générer !</string>
     <string name="voir_ma_galerie">Voir ma Galerie</string>
@@ -22,4 +22,5 @@
     <string name="suppression">Suppression</string>
     <string name="images_supprim_es">Images supprimées</string>
     <string name="non">Non</string>
+    <string name="ajouter_image_emplacement">Ajoutez une image pour remplir cet emplacement !</string>
 </resources>

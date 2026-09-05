@@ -169,6 +169,10 @@ public class WheelView extends View {
         double degrees = Math.toDegrees(Math.atan2(y, x));
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                // Empêcher le ScrollView parent d'intercepter les mouvements tactiles de la roue
+                if (getParent() != null) {
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                }
                 // 1. On mémorise l'angle de la roue au moment du contact
                 startWheelAngle = angle;
                 // 2. On calcule l'angle absolu du doigt au moment du contact
@@ -187,6 +191,13 @@ public class WheelView extends View {
 
                 invalidate(); // Redessine la roue
                 return true;
+
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                if (getParent() != null) {
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                }
+                break;
         }
         return super.onTouchEvent(event);
     }

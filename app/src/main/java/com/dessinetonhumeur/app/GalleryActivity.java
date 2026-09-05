@@ -1,12 +1,10 @@
 package com.dessinetonhumeur.app;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -78,14 +76,11 @@ public class GalleryActivity extends AppCompatActivity {
         loadGallery();
 
         // Clic sur le bouton "Depuis le téléphone"
-        btnChoosePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Création d'une "Intention" pour ouvrir le sélecteur d'images d'Android
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                photoPickerLauncher.launch(Intent.createChooser(intent, getString(R.string.s_lectionnez_une_image)));
-            }
+        btnChoosePhoto.setOnClickListener(v -> {
+            // Création d'une "Intention" pour ouvrir le sélecteur d'images d'Android
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            photoPickerLauncher.launch(Intent.createChooser(intent, getString(R.string.s_lectionnez_une_image)));
         });
 
         Button btnTakePhoto = findViewById(R.id.btn_take_photo);
@@ -106,62 +101,62 @@ public class GalleryActivity extends AppCompatActivity {
             takePictureLauncher.launch(photoURI);
         });
 
-        // Bouton Supprimer
-        btnDeletePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (adapter == null || adapter.getCount() == 0) {
-                    Toast.makeText(GalleryActivity.this, R.string.galerie_vide, Toast.LENGTH_SHORT).show();
-                    return;
-                }
+        // Bouton supprimer
+        btnDeletePhoto.setOnClickListener(v -> {
+            if (adapter == null || adapter.getCount() == 0) {
+                Toast.makeText(GalleryActivity.this, R.string.galerie_vide, Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                if (!adapter.isSelectionMode()) {
-                    // On entre en mode sélection
-                    adapter.setSelectionMode(true);
-                    btnDeletePhoto.setText(R.string.confirmer_la_suppression);
-                    Toast.makeText(GalleryActivity.this, R.string.s_lectionnez_les_images_supprimer, Toast.LENGTH_SHORT).show();
+            if (!adapter.isSelectionMode()) {
+                // On entre en mode sélection
+                adapter.setSelectionMode(true);
+                btnDeletePhoto.setText(R.string.confirmer_la_suppression);
+                Toast.makeText(GalleryActivity.this, R.string.s_lectionnez_les_images_supprimer, Toast.LENGTH_SHORT).show();
+            } else {
+                // On supprime les éléments sélectionnés
+                Set<Integer> selectedPositions = adapter.getSelectedPositions();
+                if (selectedPositions.isEmpty()) {
+                    // Si rien n'est sélectionné, on quitte juste le mode
+                    adapter.setSelectionMode(false);
+                    btnDeletePhoto.setText(R.string.supprime_photo);
                 } else {
-                    // On supprime les éléments sélectionnés
-                    Set<Integer> selectedPositions = adapter.getSelectedPositions();
-                    if (selectedPositions.isEmpty()) {
-                        // Si rien n'est sélectionné, on quitte juste le mode
-                        adapter.setSelectionMode(false);
-                        btnDeletePhoto.setText(R.string.supprime_photo);
-                    } else {
-                        // Demander confirmation avant de supprimer plusieurs
-                        new AlertDialog.Builder(GalleryActivity.this)
-                                .setTitle(R.string.suppression)
-                                .setMessage("Voulez-vous supprimer les " + selectedPositions.size() + " image(s) sélectionnée(s) ?")
-                                .setPositiveButton(R.string.oui, (dialog, which) -> {
-                                    for (int pos : selectedPositions) {
-                                        GalleryItem item = (GalleryItem) adapter.getItem(pos);
+                    // Demander confirmation avant de supprimer plusieurs
+                    new AlertDialog.Builder(GalleryActivity.this)
+                            .setTitle(R.string.suppression)
+                            .setMessage("Voulez-vous supprimer les " + selectedPositions.size() + " image(s) sélectionnée(s) ?")
+                            .setPositiveButton(R.string.oui, (dialog, which) -> {
+                                for (int pos : selectedPositions) {
+                                    GalleryItem item = (GalleryItem) adapter.getItem(pos);
+                                    if (item != null) {
                                         // 1. Suppression physique du fichier
                                         FileManager.deleteImageFile(item.imagePath);
                                         // 2. Suppression en base de données
                                         dbHelper.deleteGalleryItem(item.id);
                                     }
-                                    adapter.setSelectionMode(false);
-                                    btnDeletePhoto.setText(R.string.supprime_photo);
-                                    loadGallery();
-                                    Toast.makeText(GalleryActivity.this, R.string.images_supprim_es, Toast.LENGTH_SHORT).show();
-                                })
-                                .setNegativeButton(R.string.non, null)
-                                .show();
-                    }
+                                }
+                                adapter.setSelectionMode(false);
+                                btnDeletePhoto.setText(R.string.supprime_photo);
+                                loadGallery();
+                                Toast.makeText(GalleryActivity.this, R.string.images_supprim_es, Toast.LENGTH_SHORT).show();
+                            })
+                            .setNegativeButton(R.string.non, null)
+                            .show();
                 }
             }
         });
 
         // Clic sur un item de la grille
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            GalleryItem selectedItem = (GalleryItem) parent.getItemAtPosition(position);
+            if (selectedItem != null) {
                 if (adapter != null && adapter.isSelectionMode()) {
                     adapter.toggleSelection(position);
                 } else {
-                    GalleryItem selectedItem = (GalleryItem) parent.getItemAtPosition(position);
                     showFullImageDialog(selectedItem);
                 }
+            } else if (adapter == null || !adapter.isSelectionMode()) {
+                Toast.makeText(GalleryActivity.this, R.string.ajouter_image_emplacement, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -177,36 +172,28 @@ public class GalleryActivity extends AppCompatActivity {
         builder.setView(input);
 
         // Bouton Valider
-        builder.setPositiveButton("Enregistrer", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String title = input.getText().toString().trim();
-                if (title.isEmpty()) {
-                    title = "Sans titre";
-                }
+        builder.setPositiveButton("Enregistrer", (dialog, which) -> {
+            String title = input.getText().toString().trim();
+            if (title.isEmpty()) {
+                title = "Sans titre";
+            }
 
-                // 1. On copie physiquement l'image
-                String savedPath = FileManager.copyImageToInternalStorage(GalleryActivity.this, imageUri);
+            // 1. On copie physiquement l'image
+            String savedPath = FileManager.copyImageToInternalStorage(GalleryActivity.this, imageUri);
 
-                if (savedPath != null) {
-                    // 2. On sauvegarde en base de données
-                    dbHelper.addImageToGallery(title, savedPath);
-                    Toast.makeText(GalleryActivity.this, "Dessin sauvegardé !", Toast.LENGTH_SHORT).show();
-                    // 3. On rafraîchit la grille pour voir la nouvelle image
-                    loadGallery();
-                } else {
-                    Toast.makeText(GalleryActivity.this, "Erreur lors de la copie de l'image.", Toast.LENGTH_SHORT).show();
-                }
+            if (savedPath != null) {
+                // 2. On sauvegarde en base de données
+                dbHelper.addImageToGallery(title, savedPath);
+                Toast.makeText(GalleryActivity.this, "Dessin sauvegardé !", Toast.LENGTH_SHORT).show();
+                // 3. On rafraîchit la grille pour voir la nouvelle image
+                loadGallery();
+            } else {
+                Toast.makeText(GalleryActivity.this, "Erreur lors de la copie de l'image.", Toast.LENGTH_SHORT).show();
             }
         });
 
         // Bouton Annuler
-        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
 
         builder.show();
     }
@@ -216,6 +203,9 @@ public class GalleryActivity extends AppCompatActivity {
         // On crée une boîte de dialogue personnalisée
         Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.setContentView(R.layout.dialog_full_image);
+
+        View dialogRoot = dialog.findViewById(R.id.dialog_root);
+        dialogRoot.setOnClickListener(v -> dialog.dismiss());
 
         ImageView fullImage = dialog.findViewById(R.id.full_image_view);
         TextView fullTitle = dialog.findViewById(R.id.full_title_text);
@@ -230,9 +220,7 @@ public class GalleryActivity extends AppCompatActivity {
         }
 
         // Logique du bouton Partager l'image
-        btnShare.setOnClickListener(v -> {
-            shareImage(imgFile);
-        });
+        btnShare.setOnClickListener(v -> shareImage(imgFile));
 
         btnDelete.setOnClickListener(v -> {
             // 1. Confirmation par l'utilisateur
@@ -246,7 +234,7 @@ public class GalleryActivity extends AppCompatActivity {
                         // 3. Suppression en base de données
                         dbHelper.deleteGalleryItem(item.id);
 
-                        // 4. Fermer la popup
+                        // 4. Fermer le popup
                         dialog.dismiss();
 
                         // 5. IMPORTANT : Recharger la galerie pour mettre à jour la grille
@@ -262,7 +250,7 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
     private void shareImage(File imageFile) {
-        // On utilise le FileProvider pour obtenir une URI sécurisée
+        // On utilise le FileProvider pour obtenir un URI sécurisé
         Uri contentUri = FileProvider.getUriForFile(this,
                 "com.dessinetonhumeur.app.fileprovider", imageFile);
 

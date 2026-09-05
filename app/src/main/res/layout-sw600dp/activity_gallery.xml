@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="24dp"
     android:background="@color/backgroundColor"
     tools:ignore="VisualLintBounds">
 
@@ -24,7 +24,7 @@
             android:layout_centerVertical="true"
             android:text="@string/retour"
             android:textColor="@color/back_btn"
-            android:textSize="16sp"
+            android:textSize="18sp"
             tools:ignore="VisualLintSystemUi" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_centerInParent="true"
             android:text="@string/ma_galerie"
             android:textColor="@color/primaryColor"
-            android:textSize="22sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -46,9 +46,9 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_choose_photo"
-            android:layout_width="116dp"
+            android:layout_width="wrap_content"
             android:layout_height="56dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:backgroundTint="@color/primaryColor"
             android:text="@string/depuis_le_telephone"
             android:textColor="@color/full_black"
@@ -59,10 +59,11 @@
             android:id="@+id/btn_take_photo"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
-            android:text="@string/photo"
-            app:cornerRadius="28dp"
+            android:layout_marginEnd="16dp"
             android:backgroundTint="@color/primaryColor"
-            android:layout_marginEnd="8dp" />
+            android:text="@string/photo"
+            android:textColor="#000000"
+            app:cornerRadius="28dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_delete_photo"
@@ -81,13 +82,11 @@
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="2"
-        android:verticalSpacing="12dp"
-        android:horizontalSpacing="12dp"
+        android:numColumns="3"
+        android:verticalSpacing="16dp"
+        android:horizontalSpacing="16dp"
         android:stretchMode="columnWidth"
         android:clipToPadding="false"
-        android:paddingBottom="16dp"
-
-        />
+        android:paddingBottom="16dp" />
 
 </LinearLayout>
