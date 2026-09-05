@@ -80,7 +80,7 @@ public class GalleryActivity extends AppCompatActivity {
             // Création d'une "Intention" pour ouvrir le sélecteur d'images d'Android
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
-            photoPickerLauncher.launch(Intent.createChooser(intent, getString(R.string.s_lectionnez_une_image)));
+            photoPickerLauncher.launch(Intent.createChooser(intent, getString(R.string.prompt_select_image)));
         });
 
         Button btnTakePhoto = findViewById(R.id.btn_take_photo);
@@ -104,28 +104,28 @@ public class GalleryActivity extends AppCompatActivity {
         // Bouton supprimer
         btnDeletePhoto.setOnClickListener(v -> {
             if (adapter == null || adapter.getCount() == 0) {
-                Toast.makeText(GalleryActivity.this, R.string.galerie_vide, Toast.LENGTH_SHORT).show();
+                Toast.makeText(GalleryActivity.this, R.string.gallery_empty, Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (!adapter.isSelectionMode()) {
                 // On entre en mode sélection
                 adapter.setSelectionMode(true);
-                btnDeletePhoto.setText(R.string.confirmer_la_suppression);
-                Toast.makeText(GalleryActivity.this, R.string.s_lectionnez_les_images_supprimer, Toast.LENGTH_SHORT).show();
+                btnDeletePhoto.setText(R.string.gallery_confirm_deletion);
+                Toast.makeText(GalleryActivity.this, R.string.prompt_select_images_to_delete, Toast.LENGTH_SHORT).show();
             } else {
                 // On supprime les éléments sélectionnés
                 Set<Integer> selectedPositions = adapter.getSelectedPositions();
                 if (selectedPositions.isEmpty()) {
                     // Si rien n'est sélectionné, on quitte juste le mode
                     adapter.setSelectionMode(false);
-                    btnDeletePhoto.setText(R.string.supprime_photo);
+                    btnDeletePhoto.setText(R.string.action_delete);
                 } else {
                     // Demander confirmation avant de supprimer plusieurs
                     new AlertDialog.Builder(GalleryActivity.this)
-                            .setTitle(R.string.suppression)
+                            .setTitle(R.string.dialog_deletion_title)
                             .setMessage("Voulez-vous supprimer les " + selectedPositions.size() + " image(s) sélectionnée(s) ?")
-                            .setPositiveButton(R.string.oui, (dialog, which) -> {
+                            .setPositiveButton(R.string.dialog_yes, (dialog, which) -> {
                                 for (int pos : selectedPositions) {
                                     GalleryItem item = (GalleryItem) adapter.getItem(pos);
                                     if (item != null) {
@@ -136,11 +136,11 @@ public class GalleryActivity extends AppCompatActivity {
                                     }
                                 }
                                 adapter.setSelectionMode(false);
-                                btnDeletePhoto.setText(R.string.supprime_photo);
+                                btnDeletePhoto.setText(R.string.action_delete);
                                 loadGallery();
-                                Toast.makeText(GalleryActivity.this, R.string.images_supprim_es, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(GalleryActivity.this, R.string.gallery_images_deleted_toast, Toast.LENGTH_SHORT).show();
                             })
-                            .setNegativeButton(R.string.non, null)
+                            .setNegativeButton(R.string.dialog_no, null)
                             .show();
                 }
             }
@@ -156,7 +156,7 @@ public class GalleryActivity extends AppCompatActivity {
                     showFullImageDialog(selectedItem);
                 }
             } else if (adapter == null || !adapter.isSelectionMode()) {
-                Toast.makeText(GalleryActivity.this, R.string.ajouter_image_emplacement, Toast.LENGTH_SHORT).show();
+                Toast.makeText(GalleryActivity.this, R.string.prompt_add_image_slot, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -165,17 +165,17 @@ public class GalleryActivity extends AppCompatActivity {
     // Méthode pour afficher un Popup demandant le titre du dessin
     private void askForTitleAndSave(Uri imageUri) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Titre de votre œuvre");
+        builder.setTitle(R.string.drawing_artwork_title_prompt);
 
         // On crée un champ de texte (EditText) dans le code pour le mettre dans le popup
         final EditText input = new EditText(this);
         builder.setView(input);
 
         // Bouton Valider
-        builder.setPositiveButton("Enregistrer", (dialog, which) -> {
+        builder.setPositiveButton(R.string.action_save, (dialog, which) -> {
             String title = input.getText().toString().trim();
             if (title.isEmpty()) {
-                title = "Sans titre";
+                title = String.valueOf(R.string.drawing_untitled);
             }
 
             // 1. On copie physiquement l'image
@@ -184,16 +184,16 @@ public class GalleryActivity extends AppCompatActivity {
             if (savedPath != null) {
                 // 2. On sauvegarde en base de données
                 dbHelper.addImageToGallery(title, savedPath);
-                Toast.makeText(GalleryActivity.this, "Dessin sauvegardé !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GalleryActivity.this, R.string.action_save, Toast.LENGTH_SHORT).show();
                 // 3. On rafraîchit la grille pour voir la nouvelle image
                 loadGallery();
             } else {
-                Toast.makeText(GalleryActivity.this, "Erreur lors de la copie de l'image.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GalleryActivity.this, R.string.error_image_copy, Toast.LENGTH_SHORT).show();
             }
         });
 
         // Bouton Annuler
-        builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.cancel());
 
         builder.show();
     }
@@ -225,9 +225,9 @@ public class GalleryActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(v -> {
             // 1. Confirmation par l'utilisateur
             new AlertDialog.Builder(this)
-                    .setTitle("Supprimer ce dessin ?")
-                    .setMessage("Cette action est irréversible.")
-                    .setPositiveButton("Supprimer", (d, which) -> {
+                    .setTitle(R.string.dialog_delete_drawing_title)
+                    .setMessage(R.string.dialog_irreversible_warning)
+                    .setPositiveButton(R.string.action_delete, (d, which) -> {
                         // 2. Suppression physique du fichier
                         FileManager.deleteImageFile(item.imagePath);
 
@@ -240,9 +240,9 @@ public class GalleryActivity extends AppCompatActivity {
                         // 5. IMPORTANT : Recharger la galerie pour mettre à jour la grille
                         loadGallery();
 
-                        Toast.makeText(this, "Dessin supprimé", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.drawing_deleted_toast, Toast.LENGTH_SHORT).show();
                     })
-                    .setNegativeButton("Annuler", null)
+                    .setNegativeButton(R.string.action_cancel, null)
                     .show();
         });
 
@@ -261,7 +261,7 @@ public class GalleryActivity extends AppCompatActivity {
         // On donne la permission de lecture temporaire à l'app qui recevra l'image
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-        startActivity(Intent.createChooser(shareIntent, "Partager mon dessin via..."));
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.sharing_tip)));
     }
 
     private void loadGallery() {
@@ -271,29 +271,29 @@ public class GalleryActivity extends AppCompatActivity {
         
         // S'assurer que le bouton revient à son état initial si on recharge
         if (btnDeletePhoto != null) {
-            btnDeletePhoto.setText(R.string.supprime_photo);
+            btnDeletePhoto.setText(R.string.action_delete);
         }
     }
 
     // Demande le titre spécifiquement pour une image prise avec l'appareil photo
     private void askForTitleForCameraPhoto(String imagePath) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Titre de votre œuvre");
+        builder.setTitle(R.string.drawing_artwork_title_prompt);
 
         final EditText input = new EditText(this);
         builder.setView(input);
 
-        builder.setPositiveButton("Enregistrer", (dialog, which) -> {
+        builder.setPositiveButton(R.string.action_save, (dialog, which) -> {
             String title = input.getText().toString().trim();
-            if (title.isEmpty()) title = "Sans titre";
+            if (title.isEmpty()) title = getString(R.string.drawing_untitled);
 
             // L'image est DÉJÀ copiée, on l'insère directement dans la base de données !
             dbHelper.addImageToGallery(title, imagePath);
-            Toast.makeText(this, "Dessin sauvegardé !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.action_save, Toast.LENGTH_SHORT).show();
             loadGallery();
         });
 
-        builder.setNegativeButton("Annuler", (dialog, which) -> {
+        builder.setNegativeButton(R.string.action_cancel, (dialog, which) -> {
             // Si on annule, on supprime la photo du téléphone pour ne pas gâcher d'espace
             FileManager.deleteImageFile(imagePath);
             dialog.cancel();

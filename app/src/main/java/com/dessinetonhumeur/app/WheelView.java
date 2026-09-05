@@ -17,16 +17,24 @@ public class WheelView extends View {
 
     // Liste de nos humeurs
     private final String[] moods = {
-            "Onirique", "Joyeux", "Nostalgique", "Triste",
+            "Rêveur", "Joyeux", "Nostalgique", "Triste",
             "Énergique", "Mystérieux", "Futuriste", "Calme",
             "Colère", "Romantique", "Créatif"
     };
 
     // Tableau utilisé UNIQUEMENT pour dessiner le texte sur la roue
     private final String[] moodsDisplay = {
-            "🌳 Onirique", "😊 Joyeux", "🎵 Nostalgique", "😢 Triste",
-            "⚡ Énergique", "🌌 Mystérieux", "🚀 Futuriste", "🛏️ Calme",
-            "😡 Colère", "💘 Romantique", "🎨 Créatif"
+            getContext().getString(R.string.mood_reveur), 
+            getContext().getString(R.string.mood_joyeux),
+            getContext().getString(R.string.mood_nostalgie),
+            getContext().getString(R.string.mood_trist),
+            getContext().getString(R.string.mood_energique),
+            getContext().getString(R.string.mood_mystere),
+            getContext().getString(R.string.mood_futur),
+            getContext().getString(R.string.mood_calme),
+            getContext().getString(R.string.mood_colere),
+            getContext().getString(R.string.mood_romance),
+            getContext().getString(R.string.mood_creatif)
     };
 
     // Objets Paint utilisés pour définir comment dessiner (couleur, taille, style)
@@ -130,7 +138,7 @@ public class WheelView extends View {
     private int getColorForMood(int index) {
         // Ces couleurs correspondent une à une au tableau 'moods'
         String[] hexColors = {
-                "#4CAF50", // Onirique (Vert)
+                "#4CAF50", // Rêveur (Vert)
                 "#FFEB3B", // Joyeux (Jaune)
                 "#9E9E9E", // Nostalgique (Gris)
                 "#2196F3", // Triste (Bleu)

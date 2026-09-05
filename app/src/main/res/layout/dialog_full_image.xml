@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_container"
-        android:contentDescription="@string/agrandissement_de_l_image"
+        android:contentDescription="@string/drawing_zoom_image"
         android:padding="16dp"
         android:scaleType="fitCenter" />
 
@@ -38,14 +38,14 @@
                 android:id="@+id/btn_share_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/partager_ce_dessin"
+                android:text="@string/sharing_share_drawing"
                 android:fontFamily="@font/cabin_sketch"/>
 
             <Button
                 android:id="@+id/btn_delete_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/supprime_photo"
+                android:text="@string/action_delete"
                 android:fontFamily="@font/cabin_sketch"
                 android:backgroundTint="#F44336" />
         </LinearLayout>

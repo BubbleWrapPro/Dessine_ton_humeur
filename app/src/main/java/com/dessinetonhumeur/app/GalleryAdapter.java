@@ -131,7 +131,7 @@ public class GalleryAdapter extends BaseAdapter {
             imageView.setImageURI(null);
 
             TextView titleText = convertView.findViewById(R.id.item_text_title);
-            String emptyTitle = "Dessin n°" + (position + 1);
+            String emptyTitle = context.getString(R.string.drawing_default_title_prefix) + (position + 1);
             titleText.setText(emptyTitle);
 
             CheckBox checkBox = convertView.findViewById(R.id.item_checkbox);

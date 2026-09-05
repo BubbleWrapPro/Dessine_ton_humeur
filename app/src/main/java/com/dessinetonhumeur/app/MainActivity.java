@@ -59,19 +59,19 @@ public class MainActivity extends AppCompatActivity {
                 String currentIdea = ideaText.getText().toString();
 
                 // On vérifie que l'utilisateur a bien généré une idée avant de partager
-                if (!currentIdea.equals("Tournez la roue et appuyez sur générer !") && !currentIdea.isEmpty()) {
+                if (!currentIdea.equals(getString(R.string.prompt_spin_wheel)) && !currentIdea.isEmpty()) {
 
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain"); // On précise qu'on envoie du texte simple
 
                     // Le texte qui sera envoyé
-                    String messageToShare = "Aujourd'hui, mon humeur m'inspire cette idée de dessin : " + currentIdea + " 🎨✨ (Généré via DrawYourMood)";
+                    String messageToShare = getString(R.string.inspiration_message_prefix) + currentIdea + getString(R.string.inspiration_message_suffix);
                     shareIntent.putExtra(Intent.EXTRA_TEXT, messageToShare);
 
                     // Ouvre le menu de choix d'application
-                    startActivity(Intent.createChooser(shareIntent, "Partager mon idée avec..."));
+                    startActivity(Intent.createChooser(shareIntent, getString(R.string.sharing_share_idea)));
                 } else {
-                    Toast.makeText(MainActivity.this, "Générez d'abord une idée pour la partager !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.error_generate_before_sharing, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             int minutesLeft = (int) (timeLeftMillis / (1000 * 60));
 
             Toast.makeText(MainActivity.this,
-                    "Vous devez attendre encore " + minutesLeft + " minutes avant de changer d'idée !",
+                    getString(R.string.cooldown_wait_prefix) + minutesLeft + getString(R.string.cooldown_wait_suffix),
                     Toast.LENGTH_LONG).show();
             return; // On arrête la fonction ici, on ne génère rien.
         }
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             // Cas très rare : l'utilisateur a épuisé toutes les idées de cette humeur ce mois-ci
-            Toast.makeText(this, "Toutes les idées pour cette humeur ont déjà été utilisées ce mois-ci !", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.error_monthly_limit_reached, Toast.LENGTH_LONG).show();
         }
     }
 }

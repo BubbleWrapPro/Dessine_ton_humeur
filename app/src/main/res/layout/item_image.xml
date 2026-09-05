@@ -21,7 +21,7 @@
             android:layout_height="150dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:contentDescription="@string/emplacement_d_une_image"
+            android:contentDescription="@string/drawing_image_slot"
             android:scaleType="centerCrop"
             android:background="#E0E0E0" />
 

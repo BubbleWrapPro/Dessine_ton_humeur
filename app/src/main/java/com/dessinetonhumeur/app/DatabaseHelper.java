@@ -95,17 +95,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Insertion des idées par défaut (codées en dur comme dans l'ancien projet)
     private void insertInitialIdeas(SQLiteDatabase db) {
-        // --- ONIRIQUE ---
-        addIdeaToDb(db, "Onirique", "Dessiner une forêt dense à l'aquarelle");
-        addIdeaToDb(db, "Onirique", "Peindre une montagne enneigée dans un style réaliste");
-        addIdeaToDb(db, "Onirique", "Esquisser une rivière sauvage au fusain");
-        addIdeaToDb(db, "Onirique", "Illustrer un vieux chêne dans un style manga");
-        addIdeaToDb(db, "Onirique", "Croquer un oiseau en plein vol au stylo bille");
-        addIdeaToDb(db, "Onirique", "Dessiner une clairière lumineuse avec des couleurs pastel");
-        addIdeaToDb(db, "Onirique", "Peindre un loup hurlant à la lune en peinture acrylique");
-        addIdeaToDb(db, "Onirique", "Esquisser une fleur sauvage en line-art");
-        addIdeaToDb(db, "Onirique", "Illustrer un coucher de soleil sur la mer en pixel art");
-        addIdeaToDb(db, "Onirique", "Croquer un champ de blé au crayon de papier");
+        // --- Rêveur ---
+        addIdeaToDb(db, "Rêveur", "Dessiner une forêt dense à l'aquarelle");
+        addIdeaToDb(db, "Rêveur", "Peindre une montagne enneigée dans un style réaliste");
+        addIdeaToDb(db, "Rêveur", "Esquisser une rivière sauvage au fusain");
+        addIdeaToDb(db, "Rêveur", "Illustrer un vieux chêne dans un style manga");
+        addIdeaToDb(db, "Rêveur", "Croquer un oiseau en plein vol au stylo bille");
+        addIdeaToDb(db, "Rêveur", "Dessiner une clairière lumineuse avec des couleurs pastel");
+        addIdeaToDb(db, "Rêveur", "Peindre un loup hurlant à la lune en peinture acrylique");
+        addIdeaToDb(db, "Rêveur", "Esquisser une fleur sauvage en line-art");
+        addIdeaToDb(db, "Rêveur", "Illustrer un coucher de soleil sur la mer en pixel art");
+        addIdeaToDb(db, "Rêveur", "Croquer un champ de blé au crayon de papier");
 
         // --- JOYEUX ---
         addIdeaToDb(db, "Joyeux", "Dessiner un enfant qui rit dans un style cartoon");
