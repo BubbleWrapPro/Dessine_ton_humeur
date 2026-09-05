@@ -329,7 +329,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addIdeaToDb(db, "Créatif", "Dessiner un crayon ailé au crayon");
         addIdeaToDb(db, "Créatif", "Peindre une palette de peintre magique à l'aquarelle");
         addIdeaToDb(db, "Créatif", "Esquisser un nuage en forme de poisson en line-art");
-        addIdeaToDb(db, "Creatif", "Illustrer une île volante avec des cascades à l'envers à la gouache");
+        addIdeaToDb(db, "Créatif", "Illustrer une île volante avec des cascades à l'envers à la gouache");
         addIdeaToDb(db, "Créatif", "Réaliser un croquis d'une ampoule lumineuse entourée d'idées au stylo");
         addIdeaToDb(db, "Créatif", "Dessiner un poisson volant aux nageoires colorées aux crayons de couleur");
         addIdeaToDb(db, "Créatif", "Peindre un monde surréaliste style Dali en peinture acrylique");
